@@ -1,6 +1,8 @@
 ﻿using InventarioBiblioteca.Modelos;
 using InventarioBiblioteca.Modelos.ModelDto;
 using InventarioBiblioteca.Repositorio.IRepositorio;
+using Isopoh.Cryptography.Argon2;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -21,27 +23,35 @@ namespace InventarioBiblioteca.Repositorio
             secretkey = configuration.GetValue<string>("ApiSettings:Secret");
         }
 
-        public static string CalculateMD5Hash(string input)
-        {
-            using (MD5 md5 = MD5.Create())
-            {
-                byte[] inputBytes = Encoding.UTF8.GetBytes(input);
-                byte[] hashBytes = md5.ComputeHash(inputBytes);
+        //public static string CalculateMD5Hash(string input)
+        //{
+        //    using (MD5 md5 = MD5.Create())
+        //    {
+        //        byte[] inputBytes = Encoding.UTF8.GetBytes(input);
+        //        byte[] hashBytes = md5.ComputeHash(inputBytes);
 
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < hashBytes.Length; i++)
-                {
-                    sb.Append(hashBytes[i].ToString("x2"));
-                }
+        //        StringBuilder sb = new StringBuilder();
+        //        for (int i = 0; i < hashBytes.Length; i++)
+        //        {
+        //            sb.Append(hashBytes[i].ToString("x2"));
+        //        }
 
-                return sb.ToString();
-            }
-        }
+        //        return sb.ToString();
+        //    }
+        //}
 
         public async Task<LoginResponseDto> Login(UsuarioDto LgDto)
         {
             //se mandaria a traer los dato con el usu, para sacar el pasword y hashear con el argon2
-            var contraseña = CalculateMD5Hash(LgDto.Pwsd);
+            //var password = "password1";
+            //var passwordHash = Argon2.Hash(password);
+
+            //if (Argon2.Verify(passwordHash, password))
+            //{
+            //    // do stuff
+            //}
+
+            var contraseña = (LgDto.Pwsd);
             var usuario = await _databaseContext.Usuarios.FirstOrDefaultAsync(u => u.Usu.ToLower() == LgDto.Usu.ToLower() && u.Pwsd == contraseña);
 
             if (usuario == null)

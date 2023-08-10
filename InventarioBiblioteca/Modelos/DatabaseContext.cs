@@ -29,6 +29,8 @@ public partial class DatabaseContext : DbContext
 
     public virtual DbSet<Tipolibro> Tipolibros { get; set; }
 
+    public virtual DbSet<Tipousuario> Tipousuarios { get; set; }
+
     public virtual DbSet<Usuario> Usuarios { get; set; }
 
     public virtual DbSet<VInventario> VInventarios { get; set; }
@@ -169,6 +171,18 @@ public partial class DatabaseContext : DbContext
                 .HasColumnName("tipolibro");
         });
 
+        modelBuilder.Entity<Tipousuario>(entity =>
+        {
+            entity.HasKey(e => e.Tipousuarioid).HasName("tipousuario_pkey");
+
+            entity.ToTable("tipousuario");
+
+            entity.Property(e => e.Tipousuarioid).HasColumnName("tipousuarioid");
+            entity.Property(e => e.Tipousuario1)
+                .HasMaxLength(50)
+                .HasColumnName("tipousuario");
+        });
+
         modelBuilder.Entity<Usuario>(entity =>
         {
             entity.HasKey(e => e.Usuarioid).HasName("usuario_pkey");
@@ -177,9 +191,15 @@ public partial class DatabaseContext : DbContext
 
             entity.Property(e => e.Usuarioid).HasColumnName("usuarioid");
             entity.Property(e => e.Pwsd).HasColumnName("pwsd");
+            entity.Property(e => e.Tipousuarioid).HasColumnName("tipousuarioid");
             entity.Property(e => e.Usu)
                 .HasMaxLength(50)
                 .HasColumnName("usu");
+
+            entity.HasOne(d => d.Tipousuario).WithMany(p => p.Usuarios)
+                .HasForeignKey(d => d.Tipousuarioid)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("usuario_tipousuarioid_fkey");
         });
 
         modelBuilder.Entity<VInventario>(entity =>
@@ -236,6 +256,7 @@ public partial class DatabaseContext : DbContext
         modelBuilder.HasSequence("librosautores_libroautorid_seq");
         modelBuilder.HasSequence("tipoautor_tipoautorid_seq");
         modelBuilder.HasSequence("tipolibro_tipolibroid_seq");
+        modelBuilder.HasSequence("tipousuario_tipousuarioid_seq");
         modelBuilder.HasSequence("usuario_usuarioid_seq");
 
         OnModelCreatingPartial(modelBuilder);

@@ -10,4 +10,8 @@ public partial class Usuario
     public string Usu { get; set; } = null!;
 
     public string Pwsd { get; set; } = null!;
+
+    public int Tipousuarioid { get; set; }
+
+    public virtual Tipousuario Tipousuario { get; set; } = null!;
 }

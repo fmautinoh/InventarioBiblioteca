@@ -3,6 +3,7 @@ using InventarioBiblioteca.Modelos;
 using InventarioBiblioteca.Modelos.ModelDto;
 using InventarioBiblioteca.Repositorio.IRepositorio;
 using Isopoh.Cryptography.Argon2;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -50,13 +51,8 @@ namespace InventarioBiblioteca.Repositorio
 
         public async Task<LoginResponseDto> Login(UsuarioDto LgDto)
         {
-
-            var contraseña = (LgDto.Pwsd);
             var usuario = await _databaseContext.Usuarios.FirstOrDefaultAsync(u => u.Usu.ToLower() == LgDto.Usu.ToLower());
-            var tokenHandler= new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(secretkey);
             LoginResponseDto envio = new LoginResponseDto();
-            //el token exploto xd3
             if (usuario == null)
             {
                 return new LoginResponseDto()
@@ -66,25 +62,25 @@ namespace InventarioBiblioteca.Repositorio
                 };
             }
 
-            var passwordHash = Argon2.Hash(usuario.Pwsd);
-            if (Argon2.Verify(passwordHash, contraseña))
+            if (Argon2.Verify(usuario.Pwsd, LgDto.Pwsd))
             {
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.ASCII.GetBytes(secretkey);
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
                     Subject = new ClaimsIdentity(new Claim[]
                     {
                     new Claim(ClaimTypes.NameIdentifier, usuario.Usuarioid.ToString()),
-                    new Claim(ClaimTypes.Name,usuario.Usu.ToString()),
-                    //new Claim(ClaimTypes.Role,usuario.Tipousuario.Tipousuario1.ToString())
+                    new Claim(ClaimTypes.Name,usuario.Usu.ToString())
 
                     }),
                     Expires = DateTime.UtcNow.AddHours(8),
-                    SigningCredentials = new(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
+                    SigningCredentials = new(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
                 };
                 var token = tokenHandler.CreateToken(tokenDescriptor);
-                envio = new LoginResponseDto() {
+                  envio = new LoginResponseDto() {
                   Token= tokenHandler.WriteToken(token),
-                    Usuario = usuario
+                  Usuario = usuario
                 };
             }
             

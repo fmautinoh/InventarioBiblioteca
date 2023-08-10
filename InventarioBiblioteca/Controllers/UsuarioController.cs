@@ -19,8 +19,44 @@ namespace InventarioBiblioteca.Controllers
             _usuariorepo = usuarioRepositorio;
             _apiResponse = new();
         }
+
         [HttpPost]
-        [Route("Login")]
+        [Route("/Register")]
+        [ProducesResponseType(200)]//ok
+        [ProducesResponseType(400)]//badreq
+        [ProducesResponseType(500)]//Internal Error
+        [ProducesResponseType(404)]//no found
+        [ProducesResponseType(204)]//No content
+        [ProducesResponseType(409)]//no found
+        public async Task<ActionResult<APIResponse>> Register([FromBody] UsuarioCreatedDto modelCrt)
+        {
+            if (!ModelState.IsValid)
+            {
+                var message = "Campos Invalidos";
+                _apiResponse.StatusCode = HttpStatusCode.BadRequest;
+                _apiResponse.IsSuccess = false;
+                _apiResponse.Resultado = ModelState;
+                _apiResponse.Alertmsg = message;
+                return BadRequest(_apiResponse);
+            }
+                var reg = await _usuariorepo.Register(modelCrt);
+            if(reg == null)
+            {
+                var message = "UserName ya existe";
+                _apiResponse.StatusCode = HttpStatusCode.BadRequest;
+                _apiResponse.IsSuccess = false;
+                _apiResponse.Resultado = ModelState;
+                _apiResponse.Alertmsg = message;
+                return BadRequest(_apiResponse);
+            }
+            _apiResponse.Alertmsg = "Usuario Creado Exitosamente";
+            _apiResponse.Resultado = modelCrt;
+            _apiResponse.StatusCode = HttpStatusCode.Created;
+            return Ok(_apiResponse);
+        }
+
+        [HttpPost]
+        [Route("/Login")]
         public async Task<IActionResult> Login([FromBody] UsuarioDto model)
         {
             var loginresponse = await _usuariorepo.Login(model);

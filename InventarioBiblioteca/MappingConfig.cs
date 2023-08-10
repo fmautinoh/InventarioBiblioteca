@@ -15,6 +15,8 @@ namespace InventarioBiblioteca
             CreateMap<TipoLibroDto, Tipolibro>().ReverseMap();
             CreateMap<Librosautore, LibroAutorCreatedDto>().ReverseMap();
             CreateMap<Inventariolibro, InventarioDto>().ReverseMap();
+            CreateMap<Usuario, UsuarioCreatedDto>().ReverseMap();
+
         }
     }
 }

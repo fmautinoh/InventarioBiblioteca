@@ -5,6 +5,7 @@ using Isopoh.Cryptography.Argon2;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using NuGet.Common;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -23,37 +24,18 @@ namespace InventarioBiblioteca.Repositorio
             secretkey = configuration.GetValue<string>("ApiSettings:Secret");
         }
 
-        //public static string CalculateMD5Hash(string input)
-        //{
-        //    using (MD5 md5 = MD5.Create())
-        //    {
-        //        byte[] inputBytes = Encoding.UTF8.GetBytes(input);
-        //        byte[] hashBytes = md5.ComputeHash(inputBytes);
 
-        //        StringBuilder sb = new StringBuilder();
-        //        for (int i = 0; i < hashBytes.Length; i++)
-        //        {
-        //            sb.Append(hashBytes[i].ToString("x2"));
-        //        }
 
-        //        return sb.ToString();
-        //    }
-        //}
+
 
         public async Task<LoginResponseDto> Login(UsuarioDto LgDto)
         {
-            //se mandaria a traer los dato con el usu, para sacar el pasword y hashear con el argon2
-            //var password = "password1";
-            //var passwordHash = Argon2.Hash(password);
-
-            //if (Argon2.Verify(passwordHash, password))
-            //{
-            //    // do stuff
-            //}
 
             var contraseña = (LgDto.Pwsd);
-            var usuario = await _databaseContext.Usuarios.FirstOrDefaultAsync(u => u.Usu.ToLower() == LgDto.Usu.ToLower() && u.Pwsd == contraseña);
-
+            var usuario = await _databaseContext.Usuarios.FirstOrDefaultAsync(u => u.Usu.ToLower() == LgDto.Usu.ToLower());
+            var tokenHandler= new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(secretkey);
+            SecurityToken? Token = null;
             if (usuario == null)
             {
                 return new LoginResponseDto()
@@ -62,25 +44,31 @@ namespace InventarioBiblioteca.Repositorio
                     Usuario = null
                 };
             }
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(secretkey);
-            var tokenDescriptor = new SecurityTokenDescriptor
+            var passwordHash = Argon2.Hash(usuario.Pwsd);
+            if (Argon2.Verify(passwordHash, contraseña))
             {
-                Subject = new ClaimsIdentity(new Claim[]
+                var tokenDescriptor = new SecurityTokenDescriptor
                 {
+                    Subject = new ClaimsIdentity(new Claim[]
+                    {
                     new Claim(ClaimTypes.NameIdentifier, usuario.Usuarioid.ToString()),
-                    new Claim(ClaimTypes.Name,usuario.Usu.ToString())
-                }),
-                Expires = DateTime.UtcNow.AddHours(8),
-                SigningCredentials = new(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
+                    new Claim(ClaimTypes.Name,usuario.Usu.ToString()),
+                    new Claim(ClaimTypes.Role,usuario.Tipousuario.Tipousuario1.ToString())
+
+                    }),
+                    Expires = DateTime.UtcNow.AddHours(8),
+                    SigningCredentials = new(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
+                };
+                var token = tokenHandler.CreateToken(tokenDescriptor);
+                    Token = token;
+            }
             LoginResponseDto loginResponseDto = new()
             {
-                Token = tokenHandler.WriteToken(token),
+                Token = tokenHandler.WriteToken(Token),
                 Usuario = usuario
             };
             return loginResponseDto;
+
         }
     }
 }

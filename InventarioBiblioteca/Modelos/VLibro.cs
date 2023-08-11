@@ -21,7 +21,7 @@ public partial class VLibro
 
     public int? Edicion { get; set; }
 
-    public DateOnly? Año { get; set; }
+    public int Año { get; set; }
 
     public string? Editorial { get; set; }
     [NotMapped] // Exclude this property from database mapping

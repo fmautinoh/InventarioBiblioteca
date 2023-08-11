@@ -12,7 +12,7 @@ namespace InventarioBiblioteca.Modelos.ModelDto
         [Required]
         public int? Edicion { get; set; }
         [Required]
-        public string? Año { get; set; }
+        public int Año { get; set; }
         [Required]
         [StringLength(80)]
         public string? Editorial { get; set; }

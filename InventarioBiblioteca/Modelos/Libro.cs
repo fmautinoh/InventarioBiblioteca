@@ -14,7 +14,7 @@ public partial class Libro
 
     public int? Edicion { get; set; }
 
-    public DateOnly Año { get; set; }
+    public int Año { get; set; }
 
     public string? Editorial { get; set; }
 

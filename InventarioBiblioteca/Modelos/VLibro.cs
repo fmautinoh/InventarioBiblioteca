@@ -1,7 +1,5 @@
-﻿using InventarioBiblioteca.Modelos.ModelDto;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace InventarioBiblioteca.Modelos;
 
@@ -21,9 +19,7 @@ public partial class VLibro
 
     public int? Edicion { get; set; }
 
-    public string? Año { get; set; }
+    public DateOnly? Año { get; set; }
 
     public string? Editorial { get; set; }
-    [NotMapped] // Exclude this property from database mapping
-    public List<AutorDtosList> AutoresIds { get; set; }
 }

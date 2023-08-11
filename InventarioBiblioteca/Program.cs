@@ -95,6 +95,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseCors("accesofrontend");
+
 app.UseAuthorization();
 
 app.MapControllers();

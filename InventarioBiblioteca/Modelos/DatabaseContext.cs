@@ -37,9 +37,9 @@ public partial class DatabaseContext : DbContext
 
     public virtual DbSet<VLibro> VLibros { get; set; }
 
-//    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-//        => optionsBuilder.UseNpgsql("Host=localhost;Database=inventariobiblioteca;Username=inventario;Password=desarrollo");
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseNpgsql("Host=localhost;Database=inventariobiblioteca;Username=inventario;Password=desarrollo");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -108,9 +108,7 @@ public partial class DatabaseContext : DbContext
             entity.ToTable("libros");
 
             entity.Property(e => e.Libroid).HasColumnName("libroid");
-            entity.Property(e => e.Año)
-                .HasMaxLength(4)
-                .HasColumnName("año");
+            entity.Property(e => e.Año).HasColumnName("año");
             entity.Property(e => e.Edicion).HasColumnName("edicion");
             entity.Property(e => e.Editorial)
                 .HasMaxLength(80)
@@ -230,9 +228,7 @@ public partial class DatabaseContext : DbContext
                 .ToView("v_libro");
 
             entity.Property(e => e.Autorid).HasColumnName("autorid");
-            entity.Property(e => e.Año)
-                .HasMaxLength(4)
-                .HasColumnName("año");
+            entity.Property(e => e.Año).HasColumnName("año");
             entity.Property(e => e.Edicion).HasColumnName("edicion");
             entity.Property(e => e.Editorial)
                 .HasMaxLength(80)

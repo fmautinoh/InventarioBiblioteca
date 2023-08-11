@@ -27,7 +27,7 @@ namespace InventarioBiblioteca.Controllers
         [ProducesResponseType(500)]//Internal Error
         [ProducesResponseType(404)]//no found
         [ProducesResponseType(204)]//No content
-        [ProducesResponseType(409)]//no found
+        [ProducesResponseType(409)]//no conflict
         public async Task<ActionResult<APIResponse>> Register([FromBody] UsuarioCreatedDto modelCrt)
         {
             if (!ModelState.IsValid)

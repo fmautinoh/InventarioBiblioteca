@@ -11,9 +11,13 @@ public partial class VInventario
 
     public int? Estadoid { get; set; }
 
+    public int? Autenticidadid { get; set; }
+
     public string? Codigo { get; set; }
 
     public string? Descripcion { get; set; }
+
+    public string? Autenticidad { get; set; }
 
     public int? Valor { get; set; }
 

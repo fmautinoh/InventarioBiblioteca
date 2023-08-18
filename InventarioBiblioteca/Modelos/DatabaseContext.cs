@@ -15,6 +15,7 @@ public partial class DatabaseContext : DbContext
     {
     }
 
+    public virtual DbSet<Autenticidad> Autenticidads { get; set; }
     public virtual DbSet<Autore> Autores { get; set; }
 
     public virtual DbSet<Estadoconservacion> Estadoconservacions { get; set; }
@@ -43,6 +44,19 @@ public partial class DatabaseContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+
+        modelBuilder.Entity<Autenticidad>(entity =>
+        {
+            entity.HasKey(e => e.Autenticidadid).HasName("autenticidad_pkey");
+
+            entity.ToTable("autenticidad");
+
+            entity.Property(e => e.Autenticidadid).HasColumnName("autenticidadid");
+            entity.Property(e => e.Autenticidad1)
+                .HasMaxLength(50)
+                .HasColumnName("autenticidad");
+        });
+
         modelBuilder.Entity<Autore>(entity =>
         {
             entity.HasKey(e => e.Autorid).HasName("autores_pkey");

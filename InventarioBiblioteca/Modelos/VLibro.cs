@@ -24,6 +24,4 @@ public partial class VLibro
     public int Año { get; set; }
 
     public string? Editorial { get; set; }
-    [NotMapped] // Exclude this property from database mapping
-    public List<AutorDtosList> AutoresIds { get; set; }
 }

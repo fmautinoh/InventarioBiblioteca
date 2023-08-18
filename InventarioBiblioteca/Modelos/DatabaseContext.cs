@@ -16,6 +16,7 @@ public partial class DatabaseContext : DbContext
     }
 
     public virtual DbSet<Autenticidad> Autenticidads { get; set; }
+
     public virtual DbSet<Autore> Autores { get; set; }
 
     public virtual DbSet<Estadoconservacion> Estadoconservacions { get; set; }
@@ -38,13 +39,12 @@ public partial class DatabaseContext : DbContext
 
     public virtual DbSet<VLibro> VLibros { get; set; }
 
-    //    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-    //        => optionsBuilder.UseNpgsql("Host=localhost;Database=inventariobiblioteca;Username=inventario;Password=desarrollo");
+//    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+//        => optionsBuilder.UseNpgsql("Host=localhost;Database=inventariobiblioteca;Username=inventario;Password=desarrollo");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-
         modelBuilder.Entity<Autenticidad>(entity =>
         {
             entity.HasKey(e => e.Autenticidadid).HasName("autenticidad_pkey");
@@ -98,11 +98,17 @@ public partial class DatabaseContext : DbContext
             entity.ToTable("inventariolibro");
 
             entity.Property(e => e.Inventarioid).HasColumnName("inventarioid");
+            entity.Property(e => e.Autenticidadid).HasColumnName("autenticidadid");
             entity.Property(e => e.Codigo)
                 .HasMaxLength(40)
                 .HasColumnName("codigo");
             entity.Property(e => e.Estadoid).HasColumnName("estadoid");
             entity.Property(e => e.Libroid).HasColumnName("libroid");
+
+            entity.HasOne(d => d.Autenticidad).WithMany(p => p.Inventariolibros)
+                .HasForeignKey(d => d.Autenticidadid)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("inventariolibro_autenticidadid_fkey");
 
             entity.HasOne(d => d.Estado).WithMany(p => p.Inventariolibros)
                 .HasForeignKey(d => d.Estadoid)
@@ -166,9 +172,9 @@ public partial class DatabaseContext : DbContext
             entity.ToTable("tipoautor");
 
             entity.Property(e => e.Tipoautorid).HasColumnName("tipoautorid");
-            entity.Property(e => e.Tipoautor1)
+            entity.Property(e => e.Tipautoresoautor)
                 .HasMaxLength(25)
-                .HasColumnName("tipoautor");
+                .HasColumnName("tipautoresoautor");
         });
 
         modelBuilder.Entity<Tipolibro>(entity =>
@@ -220,6 +226,10 @@ public partial class DatabaseContext : DbContext
                 .HasNoKey()
                 .ToView("v_inventario");
 
+            entity.Property(e => e.Autenticidad)
+                .HasMaxLength(50)
+                .HasColumnName("autenticidad");
+            entity.Property(e => e.Autenticidadid).HasColumnName("autenticidadid");
             entity.Property(e => e.Codigo)
                 .HasMaxLength(40)
                 .HasColumnName("codigo");
@@ -259,6 +269,7 @@ public partial class DatabaseContext : DbContext
                 .HasColumnName("tipolibro");
             entity.Property(e => e.Tipolibroid).HasColumnName("tipolibroid");
         });
+        modelBuilder.HasSequence("autenticidad_autenticidadid_seq");
         modelBuilder.HasSequence("autores_autorid_seq");
         modelBuilder.HasSequence("estadoconservacion_estadoid_seq");
         modelBuilder.HasSequence("inventariolibro_inventarioid_seq");

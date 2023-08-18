@@ -12,6 +12,7 @@ public partial class Inventariolibro
     public string Codigo { get; set; } = null!;
 
     public int Estadoid { get; set; }
+
     public int Autenticidadid { get; set; }
 
     public virtual Autenticidad Autenticidad { get; set; } = null!;

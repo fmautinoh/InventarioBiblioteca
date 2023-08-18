@@ -155,7 +155,8 @@ namespace InventarioBiblioteca.Controllers
                 Inventarioid = idInv,
                 Libroid = ModelInv.LibroId,
                 Codigo = ModelInv.Codigo,
-                Estadoid = ModelInv.EstadoId
+                Estadoid = ModelInv.EstadoId,
+                Autenticidadid=ModelInv.Autenticidadid
             };
 
             await _Invrepo.Actualizar(mdInvUp);
@@ -183,7 +184,8 @@ namespace InventarioBiblioteca.Controllers
                     Inventarioid = idlib,
                     Codigo = MdLibro.Codigo,
                     Estadoid = MdLibro.Estadoid,
-                    Libroid = MdLibro.Libroid
+                    Libroid = MdLibro.Libroid,
+                    Autenticidadid = MdLibro.Autenticidadid
                 };
 
                 await _Invrepo.Remover(deleteLB);

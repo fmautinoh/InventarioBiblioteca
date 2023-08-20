@@ -83,6 +83,9 @@ builder.Services.AddScoped<Ivlibrorepositorio, vlibrorepositorio>();
 builder.Services.AddScoped<IvInventarioRepositorio, vInventarioRepositorio>();
 builder.Services.AddScoped<IInventarioRepositorio, InventarioRepositorio>();
 builder.Services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
+builder.Services.AddScoped<IEstadoRepositorio, EstadoRepositorio>();
+builder.Services.AddScoped<IAutenticidadRepositorio, AutenticidadRepositorio>();
+
 
 var app = builder.Build();
 

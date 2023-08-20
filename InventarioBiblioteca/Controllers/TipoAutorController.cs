@@ -30,7 +30,7 @@ namespace InventarioBiblioteca.Controllers
         [ProducesResponseType(200)]//ok
         [ProducesResponseType(400)]//badreq
         [ProducesResponseType(404)]//no found
-        public async Task<ActionResult<APIResponse>> GetAutor()
+        public async Task<ActionResult<APIResponse>> GetTipoAutor()
         {
             try
             {

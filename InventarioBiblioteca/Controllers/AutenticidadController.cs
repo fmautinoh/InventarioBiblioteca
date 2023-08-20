@@ -1,43 +1,40 @@
 ﻿using AutoMapper;
+using InventarioBiblioteca.Modelos.ModelDto;
+using InventarioBiblioteca.Modelos;
+using InventarioBiblioteca.Repositorio.IRepositorio;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using Microsoft.AspNetCore.Authorization;
-using InventarioBiblioteca.Modelos.ModelDto;
-using InventarioBiblioteca.Repositorio.IRepositorio;
-using InventarioBiblioteca.Modelos;
 
 namespace InventarioBiblioteca.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class TipoLibroController : ControllerBase
+    public class AutenticidadController : ControllerBase
     {
-        private readonly ITipoLibroRepositorio _tipolibrorrepo;
+        private readonly IAutenticidadRepositorio _autenticidadRepositorio;
         private readonly IMapper _mapper;
         protected APIResponse _apiResponse;
 
-        public TipoLibroController(ITipoLibroRepositorio tipolibroRepositorio, IMapper mapper)
+        public AutenticidadController(IAutenticidadRepositorio autenticidadRepositorio, IMapper mapper)
         {
             _apiResponse = new APIResponse();
-            _tipolibrorrepo = tipolibroRepositorio;
+            _autenticidadRepositorio = autenticidadRepositorio;
             _mapper = mapper;
         }
 
         [HttpGet]
-        [Route("/ListaTipoLibro")]
+        [Route("/ListaAutenticidad")]
         [ProducesResponseType(200)]//ok
         [ProducesResponseType(400)]//badreq
         [ProducesResponseType(404)]//no found
-        [ProducesResponseType(401)]//no autentication
-        public async Task<ActionResult<APIResponse>> GetTipoLibro()
+        public async Task<ActionResult<APIResponse>> GetTipoAutor()
         {
             try
             {
-                IEnumerable<Tipolibro> tipoautorlist = await _tipolibrorrepo.ListObjetos();
+                IEnumerable<Autenticidad> autenticidad = await _autenticidadRepositorio.ListObjetos();
                 _apiResponse.Alertmsg = "Listado Exitosamente";
-                _apiResponse.Resultado = _mapper.Map<IEnumerable<TipoLibroDto>>(tipoautorlist);
+                _apiResponse.Resultado = _mapper.Map<IEnumerable<AutenticidadDto>>(autenticidad);
                 _apiResponse.StatusCode = HttpStatusCode.OK;
                 return Ok(_apiResponse);
             }
@@ -48,6 +45,5 @@ namespace InventarioBiblioteca.Controllers
             }
             return _apiResponse;
         }
-
     }
 }

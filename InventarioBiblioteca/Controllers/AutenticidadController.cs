@@ -5,9 +5,11 @@ using InventarioBiblioteca.Repositorio.IRepositorio;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using Microsoft.AspNetCore.Authorization;
 
 namespace InventarioBiblioteca.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class AutenticidadController : ControllerBase

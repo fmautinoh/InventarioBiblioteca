@@ -36,10 +36,7 @@ namespace InventarioBiblioteca.Controllers
             try
             {
                 IEnumerable<Tipolibro> tipoautorlist = await _tipolibrorrepo.ListObjetos();
-                _apiResponse.Alertmsg = "Listado Exitosamente";
-                _apiResponse.Resultado = _mapper.Map<IEnumerable<TipoLibroDto>>(tipoautorlist);
-                _apiResponse.StatusCode = HttpStatusCode.OK;
-                return Ok(_apiResponse);
+                return Ok(_mapper.Map<IEnumerable<TipoLibroDto>>(tipoautorlist));
             }
             catch (Exception ex)
             {

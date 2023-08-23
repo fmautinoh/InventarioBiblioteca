@@ -35,10 +35,7 @@ namespace InventarioBiblioteca.Controllers
             try
             {
                 IEnumerable<Autore> autorlist = await _autorrepo.ListObjetos();
-                _apiResponse.Alertmsg = "Listado Exitosamente";
-                _apiResponse.Resultado = _mapper.Map<IEnumerable<AutorDto>>(autorlist);
-                _apiResponse.StatusCode = HttpStatusCode.OK;
-                return Ok(_apiResponse);
+                return Ok(_mapper.Map<IEnumerable<AutorDto>>(autorlist));
             }
             catch (Exception ex)
             {
@@ -73,10 +70,7 @@ namespace InventarioBiblioteca.Controllers
 
                     return NotFound(_apiResponse);
                 }
-                _apiResponse.Alertmsg = "Listado Exitosamente";
-                _apiResponse.Resultado = _mapper.Map<IEnumerable<AutorDto>>(autor);
-                _apiResponse.StatusCode = HttpStatusCode.OK;
-                return Ok(_apiResponse);
+                return Ok(_mapper.Map<IEnumerable<AutorDto>>(autor));
             }
             catch (Exception ex)
             {
@@ -167,9 +161,7 @@ namespace InventarioBiblioteca.Controllers
             };
 
             await _autorrepo.Actualizar(mdAutorUp);
-            _apiResponse.Alertmsg = "Autor Actualizado Correctamente Exitosamente";
-            _apiResponse.StatusCode = HttpStatusCode.NoContent;
-            return Ok(_apiResponse);
+            return Ok(mdAutorUp);
         }
 
 

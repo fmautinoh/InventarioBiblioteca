@@ -39,11 +39,7 @@ namespace InventarioBiblioteca.Controllers
             try
             {
                 var listaLibros = await _vistalibrorepo.ListLibrosConAutores(); // Use the new method
-
-                _apiResponse.Alertmsg = "Listado Exitosamente";
-                _apiResponse.Resultado = listaLibros;
-                _apiResponse.StatusCode = HttpStatusCode.OK;
-                return Ok(_apiResponse);
+                return Ok(listaLibros);
             }
             catch (Exception ex)
             {
@@ -118,10 +114,9 @@ namespace InventarioBiblioteca.Controllers
                     };
                     await _LibroAutorepo.Crear(modelautorlibro);
                 }
-                _apiResponse.Alertmsg = "Autor Creado Exitosamente";
-                _apiResponse.Resultado = modelcreate;
-                _apiResponse.StatusCode = HttpStatusCode.Created;
-                return Ok(_apiResponse);
+
+                var result = await _vistalibrorepo.Listar(c => c.Libroid == creado.Libroid);
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -164,7 +159,7 @@ namespace InventarioBiblioteca.Controllers
 
                 var arreglolenght = ModelLibro.Autor.Count;
 
-                Libro modelcreate = new()
+                Libro modelcreate = new Libro()
                 {
                     Libroid = idLib,
                     Nombrelib = ModelLibro.NombreLib,
@@ -200,9 +195,8 @@ namespace InventarioBiblioteca.Controllers
                     await _LibroAutorepo.Crear(modelautorlibro);
                 }
 
-                _apiResponse.Alertmsg = "Libro Actualizado Correctamente Exitosamente";
-                _apiResponse.StatusCode = HttpStatusCode.NoContent;
-                return Ok(_apiResponse);
+                var result = await _vistalibrorepo.Listar(c => c.Libroid == idLib);
+                return Ok(result);
             }
             catch (Exception ex)
             {

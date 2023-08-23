@@ -69,11 +69,7 @@ namespace InventarioBiblioteca.Controllers
                 _apiResponse.Alertmsg = "UserName o Password son Incorrectos";
                 return BadRequest(_apiResponse);
             }
-            _apiResponse.IsSuccess = true;
-            _apiResponse.Alertmsg = "Login Success";
-            _apiResponse.StatusCode = HttpStatusCode.OK;
-            _apiResponse.Resultado = loginresponse;
-            return Ok(_apiResponse);
+            return Ok(loginresponse);
         }
     }
 }

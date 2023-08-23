@@ -35,10 +35,7 @@ namespace InventarioBiblioteca.Controllers
             try
             {
                 IEnumerable<Autenticidad> autenticidad = await _autenticidadRepositorio.ListObjetos();
-                _apiResponse.Alertmsg = "Listado Exitosamente";
-                _apiResponse.Resultado = _mapper.Map<IEnumerable<AutenticidadDto>>(autenticidad);
-                _apiResponse.StatusCode = HttpStatusCode.OK;
-                return Ok(_apiResponse);
+                return Ok(_mapper.Map<IEnumerable<AutenticidadDto>>(autenticidad));
             }
             catch (Exception ex)
             {

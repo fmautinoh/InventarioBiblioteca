@@ -35,10 +35,7 @@ namespace InventarioBiblioteca.Controllers
             try
             {
                 IEnumerable<Estadoconservacion> estado = await _estadoRepositorio.ListObjetos();
-                _apiResponse.Alertmsg = "Listado Exitosamente";
-                _apiResponse.Resultado = _mapper.Map<IEnumerable<EstadoDto>>(estado);
-                _apiResponse.StatusCode = HttpStatusCode.OK;
-                return Ok(_apiResponse);
+                return Ok(_mapper.Map<IEnumerable<EstadoDto>>(estado));
             }
             catch (Exception ex)
             {

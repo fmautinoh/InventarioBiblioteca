@@ -36,10 +36,7 @@ namespace InventarioBiblioteca.Controllers
             try
             {
                 IEnumerable<VInventario> Invlist = await _vInvenrepo.ListObjetos();
-                _apiResponse.Alertmsg = "Listado Exitosamente";
-                _apiResponse.Resultado = Invlist;
-                _apiResponse.StatusCode = HttpStatusCode.OK;
-                return Ok(_apiResponse);
+                return Ok(Invlist);
             }
             catch (Exception ex)
             {
@@ -74,10 +71,7 @@ namespace InventarioBiblioteca.Controllers
 
                     return NotFound(_apiResponse);
                 }
-                _apiResponse.Alertmsg = "Listado Exitosamente";
-                _apiResponse.Resultado = inven;
-                _apiResponse.StatusCode = HttpStatusCode.OK;
-                return Ok(_apiResponse);
+                return Ok(inven);
             }
             catch (Exception ex)
             {
@@ -121,10 +115,7 @@ namespace InventarioBiblioteca.Controllers
 
                 Inventariolibro InventCrt = _mapper.Map<Inventariolibro>(ModelInv);
                 await _Invrepo.Crear(InventCrt);
-                _apiResponse.Alertmsg = "Stock agregado Exitosamente";
-                _apiResponse.Resultado = InventCrt;
-                _apiResponse.StatusCode = HttpStatusCode.Created;
-                return Ok(_apiResponse);
+                return Ok(InventCrt);
             }
             catch (Exception ex)
             {
@@ -160,9 +151,7 @@ namespace InventarioBiblioteca.Controllers
             };
 
             await _Invrepo.Actualizar(mdInvUp);
-            _apiResponse.Alertmsg = "Inventario Actualizado Correctamente Exitosamente";
-            _apiResponse.StatusCode = HttpStatusCode.NoContent;
-            return Ok(_apiResponse);
+            return Ok(mdInvUp);
         }
 
         [HttpDelete]
@@ -189,10 +178,7 @@ namespace InventarioBiblioteca.Controllers
                 };
 
                 await _Invrepo.Remover(deleteLB);
-                var message = "Libro Eliminado Exitosamente";
-                _apiResponse.Alertmsg = message;
-                _apiResponse.StatusCode = HttpStatusCode.NoContent;
-                return Ok(_apiResponse);
+                return Ok(deleteLB);
             }
             catch (Exception ex)
             {

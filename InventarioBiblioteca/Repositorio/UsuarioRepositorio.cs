@@ -75,7 +75,9 @@ namespace InventarioBiblioteca.Repositorio
 
                     }),
                     Expires = DateTime.UtcNow.AddHours(8),
-                    SigningCredentials = new(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                    SigningCredentials = new(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
+                    Issuer = "InventarioBiblioteca",
+                    Audience = "bookmanager-main"
                 };
                 var token = tokenHandler.CreateToken(tokenDescriptor);
                   envio = new LoginResponseDto() {

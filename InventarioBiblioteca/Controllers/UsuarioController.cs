@@ -1,10 +1,13 @@
-﻿using InventarioBiblioteca.Modelos;
+﻿using System.IdentityModel.Tokens.Jwt;
+using InventarioBiblioteca.Modelos;
 using InventarioBiblioteca.Modelos.ModelDto;
 using InventarioBiblioteca.Repositorio.IRepositorio;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.Net;
+using System.Security.Claims;
+using System.Text;
 
 namespace InventarioBiblioteca.Controllers
 {
@@ -14,10 +17,12 @@ namespace InventarioBiblioteca.Controllers
     {
         private readonly IUsuarioRepositorio _usuariorepo;
         private APIResponse _apiResponse;
-        public UsuarioController(IUsuarioRepositorio usuarioRepositorio)
+        private string secretkey;
+        public UsuarioController(IUsuarioRepositorio usuarioRepositorio, IConfiguration configuration)
         {
             _usuariorepo = usuarioRepositorio;
             _apiResponse = new();
+            secretkey = configuration.GetValue<string>("ApiSettings:Secret");
         }
 
         [HttpPost]
@@ -71,5 +76,67 @@ namespace InventarioBiblioteca.Controllers
             }
             return Ok(loginresponse);
         }
+        
+        [HttpGet]
+        [Route("/authStatus")]
+        [ProducesResponseType(200)] // OK
+        [ProducesResponseType(401)] // Unauthorized
+        public IActionResult CheckAuthStatus()
+        {
+            // Aquí verificas si la autenticación es válida utilizando JWT
+
+            // Obtén el token de autorización del encabezado
+            string token = HttpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return Unauthorized();
+            }
+
+            try
+            {
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.ASCII.GetBytes(secretkey);
+
+                // Configura los parámetros de validación para el token
+                var tokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = true,
+                    ValidIssuer = "InventarioBiblioteca",    // Emisor del token (nombre de tu backend)
+                    ValidateAudience = true,
+                    ValidAudience = "bookmanager-main", // Audiencia del token (nombre de tu frontend)
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.FromHours(8) // Sin margen de tiempo adicional
+                };
+
+                // Valida y decodifica el token
+                SecurityToken validatedToken;
+                ClaimsPrincipal claimsPrincipal = tokenHandler.ValidateToken(token, tokenValidationParameters, out validatedToken);
+                var userIdClaim = claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier);
+                String userId="";
+                String userName = "";
+                if (userIdClaim != null)
+                {
+                    userId = userIdClaim.Value;
+                }
+                var userNameClaim = claimsPrincipal.FindFirst(ClaimTypes.Name);
+                if (userNameClaim != null)
+                {
+                    userName = userNameClaim.Value;
+                }
+                // Si la validación fue exitosa, el usuario está autenticado
+                return Ok(new { ok = true, userId, userName });
+            }
+            catch (Exception e)
+            {
+                // Si la validación falla, el usuario no está autenticado
+                return Ok(new { ok = false });
+            }
+        }
+
+        
+        
     }
 }

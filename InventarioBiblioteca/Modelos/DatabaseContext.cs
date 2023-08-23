@@ -52,7 +52,7 @@ public partial class DatabaseContext : DbContext
             entity.ToTable("autenticidad");
 
             entity.Property(e => e.Autenticidadid).HasColumnName("autenticidadid");
-            entity.Property(e => e.Autenticidad1)
+            entity.Property(e => e.autenticidad)
                 .HasMaxLength(50)
                 .HasColumnName("autenticidad");
         });

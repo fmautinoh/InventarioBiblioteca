@@ -4,6 +4,6 @@
     {
         public int Autenticidadid { get; set; }
 
-        public string Autenticidad1 { get; set; } = null!;
+        public string autenticidad { get; set; } = null!;
     }
 }

@@ -15,13 +15,15 @@ namespace InventarioBiblioteca.Controllers
     public class AutorController : ControllerBase
     {
         private readonly IAutorRepositorio _autorrepo;
+        private readonly IvautorRepositorio _vautorrepo;
         private readonly IMapper _mapper;
         protected APIResponse _apiResponse;
 
-        public AutorController(IAutorRepositorio autorRepositorio, IMapper mapper)
+        public AutorController(IAutorRepositorio autorRepositorio, IMapper mapper, IvautorRepositorio vautorrepo)
         {
             _apiResponse = new APIResponse();
             _autorrepo = autorRepositorio;
+            _vautorrepo = vautorrepo;
             _mapper = mapper;
         }
 
@@ -34,8 +36,8 @@ namespace InventarioBiblioteca.Controllers
         {
             try
             {
-                IEnumerable<Autore> autorlist = await _autorrepo.ListObjetos();
-                return Ok(_mapper.Map<IEnumerable<AutorDto>>(autorlist));
+                var resultado = await _vautorrepo.ListObjetos();
+                return Ok(resultado);
             }
             catch (Exception ex)
             {
@@ -70,7 +72,9 @@ namespace InventarioBiblioteca.Controllers
 
                     return NotFound(_apiResponse);
                 }
-                return Ok(_mapper.Map<IEnumerable<AutorDto>>(autor));
+
+                var resultado = await _vautorrepo.ListObjetos(x=> x.autorID == idaut);
+                return Ok(resultado);
             }
             catch (Exception ex)
             {
@@ -124,7 +128,7 @@ namespace InventarioBiblioteca.Controllers
 
                 Autore AutoreCrt = _mapper.Map<Autore>(ModelAutor);
                 await _autorrepo.Crear(AutoreCrt);
-                var resultado = await _autorrepo.Listar(c => c.Nombreautor == AutoreCrt.Nombreautor);
+                var resultado = await _vautorrepo.ObtenerPrimerElementoDescendente(ordenarPor: x => x.autorID);
                 return Ok(resultado);
             }
             catch (Exception ex)
@@ -157,9 +161,9 @@ namespace InventarioBiblioteca.Controllers
                 Nombreautor = ModelAutor.NombreAutor,
                 Tipoautorid = ModelAutor.TipoAutorId
             };
-
             await _autorrepo.Actualizar(mdAutorUp);
-            return Ok(mdAutorUp);
+            var resultado = await _vautorrepo.Listar(x => x.autorID == idaut, tracked:false);
+            return Ok(resultado);
         }
 
 

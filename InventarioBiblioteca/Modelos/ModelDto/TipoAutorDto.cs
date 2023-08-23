@@ -4,6 +4,6 @@
     {
         public int TipoAutorId { get; set; }
 
-        public string TipoAutor1 { get; set; } = null!;
+        public string tipoautor { get; set; } = null!;
     }
 }

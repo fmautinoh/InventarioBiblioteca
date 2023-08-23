@@ -124,10 +124,8 @@ namespace InventarioBiblioteca.Controllers
 
                 Autore AutoreCrt = _mapper.Map<Autore>(ModelAutor);
                 await _autorrepo.Crear(AutoreCrt);
-                _apiResponse.Alertmsg = "Autor Creado Exitosamente";
-                _apiResponse.Resultado = AutoreCrt;
-                _apiResponse.StatusCode = HttpStatusCode.Created;
-                return Ok(_apiResponse);
+                var resultado = await _autorrepo.Listar(c => c.Nombreautor == AutoreCrt.Nombreautor);
+                return Ok(resultado);
             }
             catch (Exception ex)
             {

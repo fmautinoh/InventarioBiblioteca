@@ -57,5 +57,22 @@ namespace InventarioBiblioteca.Repositorio
             dbSet.Remove(entidad);
             await Grabar();
         }
+        
+        public async Task<T> ObtenerPrimerElementoDescendente(Expression<Func<T, bool>>? filtro = null, Expression<Func<T, object>> ordenarPor = null)
+        {
+            IQueryable<T> query = dbSet;
+
+            if (filtro != null)
+            {
+                query = query.Where(filtro);
+            }
+
+            if (ordenarPor != null)
+            {
+                query = query.OrderByDescending(ordenarPor);
+            }
+
+            return await query.FirstOrDefaultAsync();
+        }
     }
 }

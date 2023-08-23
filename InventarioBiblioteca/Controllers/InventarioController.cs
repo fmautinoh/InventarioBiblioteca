@@ -115,7 +115,8 @@ namespace InventarioBiblioteca.Controllers
 
                 Inventariolibro InventCrt = _mapper.Map<Inventariolibro>(ModelInv);
                 await _Invrepo.Crear(InventCrt);
-                return Ok(InventCrt);
+                var creado = await _vInvenrepo.ObtenerPrimerElementoDescendente(ordenarPor: x => x.Inventarioid);
+                return Ok(creado);
             }
             catch (Exception ex)
             {
@@ -151,7 +152,8 @@ namespace InventarioBiblioteca.Controllers
             };
 
             await _Invrepo.Actualizar(mdInvUp);
-            return Ok(mdInvUp);
+            var resultado = await _vInvenrepo.Listar(c => c.Inventarioid == idInv, tracked: false);
+            return Ok(resultado);
         }
 
         [HttpDelete]
@@ -178,7 +180,7 @@ namespace InventarioBiblioteca.Controllers
                 };
 
                 await _Invrepo.Remover(deleteLB);
-                return Ok(deleteLB);
+                return Ok();
             }
             catch (Exception ex)
             {

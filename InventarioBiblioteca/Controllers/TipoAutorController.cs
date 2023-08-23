@@ -35,7 +35,8 @@ namespace InventarioBiblioteca.Controllers
             try
             {
                 IEnumerable<Tipoautor> tipoautorlist = await _tipoautorrepo.ListObjetos();
-                return Ok(_mapper.Map<IEnumerable<TipoAutorDto>>(tipoautorlist));
+                var resultado = _mapper.Map<IEnumerable<TipoAutorDto>>(tipoautorlist);
+                return Ok(resultado);
             }
             catch (Exception ex)
             {

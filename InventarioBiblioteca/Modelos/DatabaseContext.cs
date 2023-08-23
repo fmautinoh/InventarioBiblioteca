@@ -172,7 +172,7 @@ public partial class DatabaseContext : DbContext
             entity.ToTable("tipoautor");
 
             entity.Property(e => e.Tipoautorid).HasColumnName("tipoautorid");
-            entity.Property(e => e.Tipoautor1)
+            entity.Property(e => e.tipoautor)
                 .HasMaxLength(25)
                 .HasColumnName("tipoautor");
         });

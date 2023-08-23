@@ -81,11 +81,8 @@ namespace InventarioBiblioteca.Controllers
         [Route("/authStatus")]
         [ProducesResponseType(200)] // OK
         [ProducesResponseType(401)] // Unauthorized
-        public IActionResult CheckAuthStatus()
+        public async Task<IActionResult> CheckAuthStatus()
         {
-            // Aquí verificas si la autenticación es válida utilizando JWT
-
-            // Obtén el token de autorización del encabezado
             string token = HttpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
 
             if (string.IsNullOrEmpty(token))

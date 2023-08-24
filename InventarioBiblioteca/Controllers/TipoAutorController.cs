@@ -30,7 +30,7 @@ namespace InventarioBiblioteca.Controllers
         [ProducesResponseType(200)]//ok
         [ProducesResponseType(400)]//badreq
         [ProducesResponseType(404)]//no found
-        public async Task<ActionResult<APIResponse>> GetTipoAutor()
+        public async Task<ActionResult<TipoAutorDto>> GetTipoAutor()
         {
             try
             {
@@ -43,7 +43,7 @@ namespace InventarioBiblioteca.Controllers
                 _apiResponse.IsSuccess = false;
                 _apiResponse.ErrorMessage = new List<string> { ex.ToString() };
             }
-            return _apiResponse;
+            return BadRequest(new { _apiResponse });
         }
     }
 }

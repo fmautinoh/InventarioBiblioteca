@@ -9,5 +9,6 @@ namespace InventarioBiblioteca.Repositorio.IRepositorio
     {
         // Add a new method to fetch books with multiple authors
         Task<List<VLibro>> ListLibrosConAutores();
+        Task<VLibro> GetLibroConAutoresPorLibroid(int libroid);
     }
 }

@@ -2,13 +2,15 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
+
 
 namespace InventarioBiblioteca.Modelos;
 
 public partial class VLibro
 {
     public int? Libroid { get; set; }
-
+    [JsonIgnore]
     public int? Autorid { get; set; }
 
     public int? Tipolibroid { get; set; }
@@ -17,6 +19,7 @@ public partial class VLibro
 
     public string? Tipolibro { get; set; }
 
+    [JsonIgnore]
     public string? Nombreautor { get; set; }
 
     public int? Edicion { get; set; }

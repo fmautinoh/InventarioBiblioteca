@@ -34,7 +34,7 @@ namespace InventarioBiblioteca.Controllers
         [ProducesResponseType(200)] // OK
         [ProducesResponseType(400)] // BadRequest
         [ProducesResponseType(404)] // NotFound
-        public async Task<ActionResult<APIResponse>> GetLibro()
+        public async Task<ActionResult<VLibro>> GetLibro()
         {
             try
             {
@@ -46,10 +46,9 @@ namespace InventarioBiblioteca.Controllers
                 _apiResponse.IsSuccess = false;
                 _apiResponse.ErrorMessage = new List<string> { ex.ToString() };
             }
-            return _apiResponse;
+            return BadRequest(new { _apiResponse });
         }
-
-
+        
         [HttpPost]
         [Route("/CreateLibro")]
         [ProducesResponseType(200)]//ok
@@ -60,7 +59,7 @@ namespace InventarioBiblioteca.Controllers
         [ProducesResponseType(409)]//no found
 
 
-        public async Task<ActionResult<APIResponse>> CrearLibro([FromBody] LibroCreatedDto ModelLibro)
+        public async Task<ActionResult<VLibro>> CrearLibro([FromBody] LibroCreatedDto ModelLibro)
         {
             try
             {
@@ -115,7 +114,7 @@ namespace InventarioBiblioteca.Controllers
                     await _LibroAutorepo.Crear(modelautorlibro);
                 }
 
-                var result = await _vistalibrorepo.Listar(c => c.Libroid == creado.Libroid);
+                var result =  await _vistalibrorepo.GetLibroConAutoresPorLibroid(creado.Libroid);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -123,7 +122,7 @@ namespace InventarioBiblioteca.Controllers
                 _apiResponse.IsSuccess = false;
                 _apiResponse.ErrorMessage = new List<string> { ex.ToString() };
             }
-            return _apiResponse;
+           return BadRequest(new { _apiResponse });
         }
 
         [HttpPut]
@@ -135,7 +134,7 @@ namespace InventarioBiblioteca.Controllers
         [ProducesResponseType(204)]//No content
         [ProducesResponseType(409)]//no found
 
-        public async Task<ActionResult<APIResponse>> UpdateLibro(int idLib, [FromBody] LibroCreatedDto ModelLibro)
+        public async Task<ActionResult<VLibro>> UpdateLibro(int idLib, [FromBody] LibroCreatedDto ModelLibro)
         {
             try
             {
@@ -195,7 +194,7 @@ namespace InventarioBiblioteca.Controllers
                     await _LibroAutorepo.Crear(modelautorlibro);
                 }
 
-                var result = await _vistalibrorepo.Listar(c => c.Libroid == idLib);
+                var result = await _vistalibrorepo.GetLibroConAutoresPorLibroid(idLib);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -203,7 +202,7 @@ namespace InventarioBiblioteca.Controllers
                 _apiResponse.IsSuccess = false;
                 _apiResponse.ErrorMessage = new List<string> { ex.ToString() };
             }
-            return _apiResponse;
+            return BadRequest(_apiResponse);
         }
 
 

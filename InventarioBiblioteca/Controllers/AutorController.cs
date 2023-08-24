@@ -32,7 +32,7 @@ namespace InventarioBiblioteca.Controllers
         [ProducesResponseType(200)]//ok
         [ProducesResponseType(400)]//badreq
         [ProducesResponseType(404)]//no found
-        public async Task<ActionResult<APIResponse>> GetAutor()
+        public async Task<ActionResult<VAutor>> GetAutor()
         {
             try
             {
@@ -44,7 +44,7 @@ namespace InventarioBiblioteca.Controllers
                 _apiResponse.IsSuccess = false;
                 _apiResponse.ErrorMessage = new List<string> { ex.ToString() };
             }
-            return _apiResponse;
+            return BadRequest(new { _apiResponse });
         }
 
         [HttpGet]
@@ -52,7 +52,7 @@ namespace InventarioBiblioteca.Controllers
         [ProducesResponseType(200)]//ok
         [ProducesResponseType(400)]//badreq
         [ProducesResponseType(404)]//no found
-        public async Task<ActionResult<APIResponse>> GetAutorporID(int idaut)
+        public async Task<ActionResult<VAutor>> GetAutorporID(int idaut)
         {
             try
             {
@@ -81,7 +81,7 @@ namespace InventarioBiblioteca.Controllers
                 _apiResponse.IsSuccess = false;
                 _apiResponse.ErrorMessage = new List<string> { ex.ToString() };
             }
-            return _apiResponse;
+            return BadRequest(new { _apiResponse });
         }
 
         [HttpPost]
@@ -94,7 +94,7 @@ namespace InventarioBiblioteca.Controllers
         [ProducesResponseType(409)]//no found
 
 
-        public async Task<ActionResult<APIResponse>> CrearAutor([FromBody] AutorCreatedDto ModelAutor)
+        public async Task<ActionResult<VAutor>> CrearAutor([FromBody] AutorCreatedDto ModelAutor)
         {
             try
             {
@@ -136,7 +136,7 @@ namespace InventarioBiblioteca.Controllers
                 _apiResponse.IsSuccess = false;
                 _apiResponse.ErrorMessage = new List<string> { ex.ToString() };
             }
-            return _apiResponse;
+            return BadRequest(new { _apiResponse });
         }
 
         [HttpPut]
@@ -147,26 +147,33 @@ namespace InventarioBiblioteca.Controllers
         [ProducesResponseType(404)]//no found
         [ProducesResponseType(204)]//No content
 
-        public async Task<IActionResult> UpdateLibro(int idaut, [FromBody] AutorCreatedDto ModelAutor)
+        public async Task<ActionResult<VAutor>> UpdateLibro(int idaut, [FromBody] AutorCreatedDto ModelAutor)
         {
-            if (idaut == 0)
+            try
             {
-                _apiResponse.StatusCode = HttpStatusCode.BadRequest;
-                _apiResponse.IsSuccess = false;
-                return BadRequest(_apiResponse);
+                if (idaut == 0)
+                {
+                    _apiResponse.StatusCode = HttpStatusCode.BadRequest;
+                    _apiResponse.IsSuccess = false;
+                    return BadRequest(_apiResponse);
+                }
+
+                Autore mdAutorUp = new()
+                {
+                    Autorid = idaut,
+                    Nombreautor = ModelAutor.NombreAutor,
+                    Tipoautorid = ModelAutor.TipoAutorId
+                };
+                await _autorrepo.Actualizar(mdAutorUp);
+                var resultado = await _vautorrepo.Listar(x => x.autorID == idaut, tracked: false);
+                return Ok(resultado);
             }
-            Autore mdAutorUp = new()
+            catch (Exception e)
             {
-                Autorid = idaut,
-                Nombreautor = ModelAutor.NombreAutor,
-                Tipoautorid = ModelAutor.TipoAutorId
-            };
-            await _autorrepo.Actualizar(mdAutorUp);
-            var resultado = await _vautorrepo.Listar(x => x.autorID == idaut, tracked:false);
-            return Ok(resultado);
+                _apiResponse.IsSuccess = false;
+                _apiResponse.ErrorMessage = new List<string> { e.ToString() };
+            }
+            return BadRequest(new { _apiResponse });
         }
-
-
-
     }
 }

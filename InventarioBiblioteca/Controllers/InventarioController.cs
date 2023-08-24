@@ -31,7 +31,7 @@ namespace InventarioBiblioteca.Controllers
         [ProducesResponseType(200)]//ok
         [ProducesResponseType(400)]//badreq
         [ProducesResponseType(404)]//no found
-        public async Task<ActionResult<APIResponse>> GetInventario()
+        public async Task<ActionResult<VInventario>> GetInventario()
         {
             try
             {
@@ -43,7 +43,7 @@ namespace InventarioBiblioteca.Controllers
                 _apiResponse.IsSuccess = false;
                 _apiResponse.ErrorMessage = new List<string> { ex.ToString() };
             }
-            return _apiResponse;
+            return BadRequest(new { _apiResponse });
         }
 
         [HttpGet]
@@ -51,7 +51,7 @@ namespace InventarioBiblioteca.Controllers
         [ProducesResponseType(200)]//ok
         [ProducesResponseType(400)]//badreq
         [ProducesResponseType(404)]//no found
-        public async Task<ActionResult<APIResponse>> GetAutorporID(int idInv)
+        public async Task<ActionResult<VInventario>> GetAutorporID(int idInv)
         {
             try
             {
@@ -78,7 +78,7 @@ namespace InventarioBiblioteca.Controllers
                 _apiResponse.IsSuccess = false;
                 _apiResponse.ErrorMessage = new List<string> { ex.ToString() };
             }
-            return _apiResponse;
+            return BadRequest(new { _apiResponse });
         }
 
         [HttpPost]
@@ -90,7 +90,7 @@ namespace InventarioBiblioteca.Controllers
         [ProducesResponseType(204)]//No content
         [ProducesResponseType(409)]//no found
 
-        public async Task<ActionResult<APIResponse>> CreateInventario([FromBody] InventarioDto ModelInv)
+        public async Task<ActionResult<VInventario>> CreateInventario([FromBody] InventarioDto ModelInv)
         {
             try
             {
@@ -123,7 +123,7 @@ namespace InventarioBiblioteca.Controllers
                 _apiResponse.IsSuccess = false;
                 _apiResponse.ErrorMessage = new List<string> { ex.ToString() };
             }
-            return _apiResponse;
+            return BadRequest(new { _apiResponse });
         }
 
         [HttpPut]
@@ -134,26 +134,36 @@ namespace InventarioBiblioteca.Controllers
         [ProducesResponseType(404)]//no found
         [ProducesResponseType(204)]//No content
 
-        public async Task<IActionResult> UpdateInventario(int idInv, [FromBody] InventarioDto ModelInv)
+        public async Task<ActionResult<VInventario>> UpdateInventario(int idInv, [FromBody] InventarioDto ModelInv)
         {
-            if (idInv == 0)
+            try
             {
-                _apiResponse.StatusCode = HttpStatusCode.BadRequest;
-                _apiResponse.IsSuccess = false;
-                return BadRequest(_apiResponse);
-            }
-            Inventariolibro mdInvUp = new()
-            {
-                Inventarioid = idInv,
-                Libroid = ModelInv.LibroId,
-                Codigo = ModelInv.Codigo,
-                Estadoid = ModelInv.EstadoId,
-                Autenticidadid=ModelInv.Autenticidadid
-            };
+                if (idInv == 0)
+                {
+                    _apiResponse.StatusCode = HttpStatusCode.BadRequest;
+                    _apiResponse.IsSuccess = false;
+                    return BadRequest(_apiResponse);
+                }
 
-            await _Invrepo.Actualizar(mdInvUp);
-            var resultado = await _vInvenrepo.Listar(c => c.Inventarioid == idInv, tracked: false);
-            return Ok(resultado);
+                Inventariolibro mdInvUp = new()
+                {
+                    Inventarioid = idInv,
+                    Libroid = ModelInv.LibroId,
+                    Codigo = ModelInv.Codigo,
+                    Estadoid = ModelInv.EstadoId,
+                    Autenticidadid = ModelInv.Autenticidadid
+                };
+
+                await _Invrepo.Actualizar(mdInvUp);
+                var resultado = await _vInvenrepo.Listar(c => c.Inventarioid == idInv, tracked: false);
+                return Ok(resultado);
+            }
+            catch (Exception e)
+            {
+                _apiResponse.IsSuccess = false;
+                _apiResponse.ErrorMessage = new List<string> { e.ToString() };
+            }
+            return BadRequest(new { _apiResponse });
         }
 
         [HttpDelete]

@@ -30,7 +30,7 @@ namespace InventarioBiblioteca.Controllers
         [ProducesResponseType(400)]//badreq
         [ProducesResponseType(404)]//no found
         [ProducesResponseType(401)]//no autentication
-        public async Task<ActionResult<APIResponse>> GetListaEstado()
+        public async  Task<ActionResult<EstadoDto>> GetListaEstado()
         {
             try
             {
@@ -42,7 +42,7 @@ namespace InventarioBiblioteca.Controllers
                 _apiResponse.IsSuccess = false;
                 _apiResponse.ErrorMessage = new List<string> { ex.ToString() };
             }
-            return _apiResponse;
+            return BadRequest(new { _apiResponse });
         }
 
     }

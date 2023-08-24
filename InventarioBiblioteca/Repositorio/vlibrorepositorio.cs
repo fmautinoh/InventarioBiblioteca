@@ -52,5 +52,38 @@ namespace InventarioBiblioteca.Repositorio
 
             return librosGrouped;
         }
+        
+        public async Task<VLibro> GetLibroConAutoresPorLibroid(int libroid)
+        {
+            // Fetch the grouped book without including the authors
+            var libroGrouped = await _context.VLibros
+                .Where(libro => libro.Libroid == libroid)
+                .Select(group => new VLibro
+                {
+                    Libroid = group.Libroid,
+                    Nombrelib = group.Nombrelib,
+                    Tipolibroid = group.Tipolibroid,
+                    Tipolibro = group.Tipolibro,
+                    Edicion = group.Edicion,
+                    Año = group.Año,
+                    Editorial = group.Editorial,
+                    AutoresIds = new List<AutorDtosList>() // Initialize an empty list for AutoresIds
+                })
+                .FirstOrDefaultAsync();
+
+            if (libroGrouped != null)
+            {
+                // Fetch the authors for the specified libro
+                var autores = await _context.VLibros
+                    .Where(libro => libro.Libroid == libroid && libro.Autorid != 0) // Exclude entries with autorId = 0
+                    .Select(a => new AutorDtosList { AutorId = (int)a.Autorid, NombreAutor = a.Nombreautor })
+                    .ToListAsync();
+
+                libroGrouped.AutoresIds.AddRange(autores); // Add authors to the AutoresIds list
+            }
+
+            return libroGrouped;
+        }
+
     }
 }

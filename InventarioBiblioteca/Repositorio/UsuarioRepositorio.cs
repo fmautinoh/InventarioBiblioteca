@@ -71,7 +71,8 @@ namespace InventarioBiblioteca.Repositorio
                     Subject = new ClaimsIdentity(new Claim[]
                     {
                     new Claim(ClaimTypes.NameIdentifier, usuario.Usuarioid.ToString()),
-                    new Claim(ClaimTypes.Name,usuario.Usu.ToString())
+                    new Claim(ClaimTypes.Name,usuario.Usu.ToString()),
+                    new Claim(ClaimTypes.Sid,usuario.Tipousuarioid.ToString())
 
                     }),
                     Expires = DateTime.UtcNow.AddHours(8),

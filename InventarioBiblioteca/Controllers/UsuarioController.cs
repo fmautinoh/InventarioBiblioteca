@@ -111,20 +111,29 @@ namespace InventarioBiblioteca.Controllers
                 // Valida y decodifica el token
                 SecurityToken validatedToken;
                 ClaimsPrincipal claimsPrincipal = tokenHandler.ValidateToken(token, tokenValidationParameters, out validatedToken);
-                var userIdClaim = claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier);
+                var userIdClaim = claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier)
+                var userNameClaim = claimsPrincipal.FindFirst(ClaimTypes.Name);
+                var userTypes = claimsPrincipal.FindFirst(ClaimTypes.Sid);
                 String userId="";
                 String userName = "";
+                String userType = "";
                 if (userIdClaim != null)
                 {
                     userId = userIdClaim.Value;
                 }
-                var userNameClaim = claimsPrincipal.FindFirst(ClaimTypes.Name);
+                
+
                 if (userNameClaim != null)
                 {
                     userName = userNameClaim.Value;
                 }
+
+                if (userType != null)
+                {
+                    userType = userTypes.Value;
+                }
                 // Si la validación fue exitosa, el usuario está autenticado
-                return Ok(new { ok = true, userId, userName });
+                return Ok(new { ok = true, userId, userName, userType });
             }
             catch (Exception e)
             {

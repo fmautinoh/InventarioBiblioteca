@@ -111,7 +111,7 @@ namespace InventarioBiblioteca.Controllers
                 // Valida y decodifica el token
                 SecurityToken validatedToken;
                 ClaimsPrincipal claimsPrincipal = tokenHandler.ValidateToken(token, tokenValidationParameters, out validatedToken);
-                var userIdClaim = claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier)
+                var userIdClaim = claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier);
                 var userNameClaim = claimsPrincipal.FindFirst(ClaimTypes.Name);
                 var userTypes = claimsPrincipal.FindFirst(ClaimTypes.Sid);
                 String userId="";

@@ -35,15 +35,14 @@ public partial class DatabaseContext : DbContext
 
     public virtual DbSet<Usuario> Usuarios { get; set; }
 
-    public virtual DbSet<VInventario> VInventarios { get; set; }
-    
-    public virtual DbSet<VLibro> VLibros { get; set; }
-    
     public virtual DbSet<VAutor> VAutors { get; set; }
 
-    /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseNpgsql("Host=localhost;Database=inventariobiblioteca;Username=inventario;Password=desarrollo");*/
+    public virtual DbSet<VInvReporte> VInvReportes { get; set; }
+
+    public virtual DbSet<VInventario> VInventarios { get; set; }
+
+    public virtual DbSet<VLibro> VLibros { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -222,6 +221,49 @@ public partial class DatabaseContext : DbContext
                 .HasConstraintName("usuario_tipousuarioid_fkey");
         });
 
+        modelBuilder.Entity<VAutor>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("v_autor");
+
+            entity.Property(e => e.autorID).HasColumnName("autorid");
+            entity.Property(e => e.nombreautor)
+                .HasMaxLength(80)
+                .HasColumnName("nombreautor");
+            entity.Property(e => e.tipoautor)
+                .HasMaxLength(25)
+                .HasColumnName("tipoautor");
+            entity.Property(e => e.tipoautorid).HasColumnName("tipoautorid");
+        });
+
+        modelBuilder.Entity<VInvReporte>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("v_inv_reporte");
+
+            entity.Property(e => e.Autenticidad)
+                .HasMaxLength(50)
+                .HasColumnName("autenticidad");
+            entity.Property(e => e.Autores).HasColumnName("autores");
+            entity.Property(e => e.Año).HasColumnName("año");
+            entity.Property(e => e.Codigo)
+                .HasMaxLength(40)
+                .HasColumnName("codigo");
+            entity.Property(e => e.Descripcion)
+                .HasMaxLength(20)
+                .HasColumnName("descripcion");
+            entity.Property(e => e.Edicion).HasColumnName("edicion");
+            entity.Property(e => e.Editorial)
+                .HasMaxLength(80)
+                .HasColumnName("editorial");
+            entity.Property(e => e.Nombrelib)
+                .HasMaxLength(80)
+                .HasColumnName("nombrelib");
+            entity.Property(e => e.Valor).HasColumnName("valor");
+        });
+
         modelBuilder.Entity<VInventario>(entity =>
         {
             entity
@@ -270,22 +312,6 @@ public partial class DatabaseContext : DbContext
                 .HasMaxLength(50)
                 .HasColumnName("tipolibro");
             entity.Property(e => e.Tipolibroid).HasColumnName("tipolibroid");
-        });
-        
-        modelBuilder.Entity<VAutor>(entity =>
-        {
-            entity
-                .HasNoKey()
-                .ToView("v_autor");
-
-            entity.Property(e => e.autorID).HasColumnName("autorid");
-            entity.Property(e => e.tipoautorid).HasColumnName("tipoautorid");
-            entity.Property(e => e.nombreautor)
-                .HasMaxLength(80)
-                .HasColumnName("nombreautor");
-            entity.Property(e => e.tipoautor)
-                .HasMaxLength(80)
-                .HasColumnName("tipoautor");
         });
         modelBuilder.HasSequence("autenticidad_autenticidadid_seq");
         modelBuilder.HasSequence("autores_autorid_seq");

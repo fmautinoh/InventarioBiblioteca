@@ -262,6 +262,7 @@ public partial class DatabaseContext : DbContext
                 .HasMaxLength(80)
                 .HasColumnName("nombrelib");
             entity.Property(e => e.Valor).HasColumnName("valor");
+            entity.Property(e => e.LibroID).HasColumnName("libroid");
         });
 
         modelBuilder.Entity<VInventario>(entity =>

@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using JsonIgnoreAttribute = System.Text.Json.Serialization.JsonIgnoreAttribute;
 
 namespace InventarioBiblioteca.Modelos;
 
@@ -22,4 +25,6 @@ public partial class VInvReporte
     public string? Autenticidad { get; set; }
 
     public int? Valor { get; set; }
+    [JsonIgnore]
+    public int LibroID { get; set; }
 }

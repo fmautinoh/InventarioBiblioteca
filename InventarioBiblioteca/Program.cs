@@ -7,6 +7,9 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using InventarioBiblioteca;
+using InventarioBiblioteca.Repositorio.IRepositorio.IReporteRepositorio;
+using InventarioBiblioteca.Repositorio.ReporteRepositorio;
+using InventarioBiblioteca.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -74,19 +77,9 @@ builder.Services.AddCors(options =>
     });
 });
 builder.Services.AddAutoMapper(typeof(MappingConfig));
-builder.Services.AddScoped<IAutorRepositorio, AutorRepositorio>();
-builder.Services.AddScoped<ITipoAutorRepositorio, TipoAutorRepositorio>();
-builder.Services.AddScoped<ITipoLibroRepositorio, TipoLibroRepositorio>();
-builder.Services.AddScoped<ILibroRepositorio, LibroRepositorio>();
-builder.Services.AddScoped<ILibroxAutorRepositorio, LibroxAutorRepositorio>();
-builder.Services.AddScoped<Ivlibrorepositorio, vlibrorepositorio>();
-builder.Services.AddScoped<IvInventarioRepositorio, vInventarioRepositorio>();
-builder.Services.AddScoped<IInventarioRepositorio, InventarioRepositorio>();
-builder.Services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
-builder.Services.AddScoped<IEstadoRepositorio, EstadoRepositorio>();
-builder.Services.AddScoped<IAutenticidadRepositorio, AutenticidadRepositorio>();
-builder.Services.AddScoped<IAutorRepositorio, AutorRepositorio>();
-builder.Services.AddScoped<IvautorRepositorio, vAutorRepositorio>();
+
+ServiceRegistration.AddServices(builder.Services);
+
 
 
 var app = builder.Build();

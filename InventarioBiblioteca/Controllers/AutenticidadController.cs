@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using InventarioBiblioteca.Modelos.ModelDto;
-using InventarioBiblioteca.Modelos;
+using InventarioBiblioteca.Models.ModelDto;
+using InventarioBiblioteca.Models;
 using InventarioBiblioteca.Repositorio.IRepositorio;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

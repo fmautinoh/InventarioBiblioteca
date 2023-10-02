@@ -1,6 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
-using InventarioBiblioteca.Modelos;
-using InventarioBiblioteca.Modelos.ModelDto;
+using InventarioBiblioteca.Models.ModelDto;
+using InventarioBiblioteca.Models;
 using InventarioBiblioteca.Repositorio.IRepositorio;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using Microsoft.AspNetCore.Authorization;
-using InventarioBiblioteca.Modelos.ModelDto;
 using InventarioBiblioteca.Repositorio.IRepositorio;
-using InventarioBiblioteca.Modelos;
+using InventarioBiblioteca.Models.ModelDto;
+using InventarioBiblioteca.Models;
 
 namespace InventarioBiblioteca.Controllers
 {

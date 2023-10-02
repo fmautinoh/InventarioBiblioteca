@@ -1,4 +1,5 @@
-﻿using InventarioBiblioteca.Modelos;
+﻿using InventarioBiblioteca.Models.ModelDto;
+using InventarioBiblioteca.Models;
 using InventarioBiblioteca.Repositorio.IRepositorio.IReporteRepositorio;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

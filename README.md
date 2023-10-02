@@ -1,2 +1,2 @@
 # InventarioBiblioteca
-psql
+SQL server

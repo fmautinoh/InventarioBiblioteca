@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using System.Linq;
 using InventarioBiblioteca.Repositorio.IRepositorio;
-using InventarioBiblioteca.Modelos;
+using InventarioBiblioteca.Models;
 
 namespace InventarioBiblioteca.Repositorio
 {

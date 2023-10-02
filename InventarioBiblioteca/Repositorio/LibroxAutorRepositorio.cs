@@ -1,10 +1,10 @@
-﻿using InventarioBiblioteca.Modelos;
+﻿using InventarioBiblioteca.Models;
 using InventarioBiblioteca.Repositorio.IRepositorio;
 using Microsoft.EntityFrameworkCore;
 
 namespace InventarioBiblioteca.Repositorio
 {
-    public class LibroxAutorRepositorio : Repositorio<Librosautore>, ILibroxAutorRepositorio
+    public class LibroxAutorRepositorio : Repositorio<LibrosAutore>, ILibroxAutorRepositorio
     {
         private readonly DatabaseContext _context;
 
@@ -13,9 +13,9 @@ namespace InventarioBiblioteca.Repositorio
             _context = db;
         }
 
-        public async Task<Librosautore> Actualizar(Librosautore entidad)
+        public async Task<LibrosAutore> Actualizar(LibrosAutore entidad)
         {
-            _context.Librosautores.Update(entidad);
+            _context.LibrosAutores.Update(entidad);
             await _context.SaveChangesAsync();
             return entidad;
         }

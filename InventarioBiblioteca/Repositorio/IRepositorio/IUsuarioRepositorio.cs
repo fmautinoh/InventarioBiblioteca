@@ -1,5 +1,5 @@
-﻿using InventarioBiblioteca.Modelos;
-using InventarioBiblioteca.Modelos.ModelDto;
+﻿using InventarioBiblioteca.Models;
+using InventarioBiblioteca.Models.ModelsDto;
 
 namespace InventarioBiblioteca.Repositorio.IRepositorio
 {

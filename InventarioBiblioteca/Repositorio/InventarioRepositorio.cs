@@ -1,9 +1,9 @@
-﻿using InventarioBiblioteca.Modelos;
+﻿using InventarioBiblioteca.Models;
 using InventarioBiblioteca.Repositorio.IRepositorio;
 
 namespace InventarioBiblioteca.Repositorio
 {
-    public class InventarioRepositorio : Repositorio<Inventariolibro>, IInventarioRepositorio
+    public class InventarioRepositorio : Repositorio<InventarioLibro>, IInventarioRepositorio
     {
         private readonly DatabaseContext _context;
 
@@ -12,9 +12,9 @@ namespace InventarioBiblioteca.Repositorio
             _context = db;
         }
 
-        public async Task<Inventariolibro> Actualizar(Inventariolibro entidad)
+        public async Task<InventarioLibro> Actualizar(InventarioLibro entidad)
         {
-            _context.Inventariolibros.Update(entidad);
+            _context.InventarioLibros.Update(entidad);
             await _context.SaveChangesAsync();
             return entidad;
         }

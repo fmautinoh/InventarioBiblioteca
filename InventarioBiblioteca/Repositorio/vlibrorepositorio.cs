@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using InventarioBiblioteca.Modelos;
-using InventarioBiblioteca.Modelos.ModelDto;
+using InventarioBiblioteca.Models;
+using InventarioBiblioteca.Models.ModelsDto;
 using InventarioBiblioteca.Repositorio.IRepositorio;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,13 +22,13 @@ namespace InventarioBiblioteca.Repositorio
         {
             // Fetch the grouped books without including the authors
             var librosGrouped = await _context.VLibros
-                .GroupBy(libro => libro.Libroid)
+                .GroupBy(libro => libro.LibroId)
                 .Select(group => new VLibro
                 {
-                    Libroid = group.Key,
-                    Nombrelib = group.First().Nombrelib,
-                    Tipolibroid = group.First().Tipolibroid,
-                    Tipolibro = group.First().Tipolibro,
+                    LibroId = group.Key,
+                    NombreLib = group.First().NombreLib,
+                    TipoLibroId = group.First().TipoLibroId,
+                    TipoLibro = group.First().TipoLibro,
                     Edicion = group.First().Edicion,
                     Año = group.First().Año,
                     Editorial = group.First().Editorial,
@@ -37,7 +37,7 @@ namespace InventarioBiblioteca.Repositorio
 
             // Fetch the authors separately
             var autores = await _context.VLibros
-                .Select(libro => new { libro.Libroid, libro.Autorid, libro.Nombreautor })
+                .Select(libro => new { libro.LibroId, libro.AutorId, libro.NombreAutor })
                 .Distinct()
                 .ToListAsync();
 
@@ -45,8 +45,8 @@ namespace InventarioBiblioteca.Repositorio
             foreach (var libro in librosGrouped)
             {
                 libro.AutoresIds = autores
-                    .Where(a => a.Libroid == libro.Libroid && a.Autorid != 0) // Exclude entries with autorId = 0
-                    .Select(a => new AutorDtosList { AutorId = (int)a.Autorid, NombreAutor = a.Nombreautor })
+                    .Where(a => a.LibroId == libro.LibroId && a.AutorId != 0) // Exclude entries with autorId = 0
+                    .Select(a => new AutorDtosList { AutorId = (int)a.AutorId, NombreAutor = a.NombreAutor })
                     .ToList();
             }
 
@@ -57,13 +57,13 @@ namespace InventarioBiblioteca.Repositorio
         {
             // Fetch the grouped book without including the authors
             var libroGrouped = await _context.VLibros
-                .Where(libro => libro.Libroid == libroid)
+                .Where(libro => libro.LibroId == libroid)
                 .Select(group => new VLibro
                 {
-                    Libroid = group.Libroid,
-                    Nombrelib = group.Nombrelib,
-                    Tipolibroid = group.Tipolibroid,
-                    Tipolibro = group.Tipolibro,
+                    LibroId = group.LibroId,
+                    NombreLib = group.NombreLib,
+                    TipoLibroId = group.TipoLibroId,
+                    TipoLibro = group.TipoLibro,
                     Edicion = group.Edicion,
                     Año = group.Año,
                     Editorial = group.Editorial,
@@ -75,8 +75,8 @@ namespace InventarioBiblioteca.Repositorio
             {
                 // Fetch the authors for the specified libro
                 var autores = await _context.VLibros
-                    .Where(libro => libro.Libroid == libroid && libro.Autorid != 0) // Exclude entries with autorId = 0
-                    .Select(a => new AutorDtosList { AutorId = (int)a.Autorid, NombreAutor = a.Nombreautor })
+                    .Where(libro => libro.LibroId == libroid && libro.AutorId != 0) // Exclude entries with autorId = 0
+                    .Select(a => new AutorDtosList { AutorId = (int)a.AutorId, NombreAutor = a.NombreAutor })
                     .ToListAsync();
 
                 libroGrouped.AutoresIds.AddRange(autores); // Add authors to the AutoresIds list

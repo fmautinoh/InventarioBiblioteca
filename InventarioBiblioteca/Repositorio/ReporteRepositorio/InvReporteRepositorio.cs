@@ -1,4 +1,4 @@
-﻿using InventarioBiblioteca.Modelos;
+﻿using InventarioBiblioteca.Models;
 using InventarioBiblioteca.Repositorio.IRepositorio.IReporteRepositorio;
 
 namespace InventarioBiblioteca.Repositorio.ReporteRepositorio

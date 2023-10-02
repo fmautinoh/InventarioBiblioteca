@@ -1,9 +1,9 @@
-﻿using InventarioBiblioteca.Modelos;
+﻿using InventarioBiblioteca.Models;
 
 namespace InventarioBiblioteca.Repositorio.IRepositorio
 {
-    public interface ILibroxAutorRepositorio : IRepositorio<Librosautore>
+    public interface ILibroxAutorRepositorio : IRepositorio<LibrosAutore>
     {
-        Task<Librosautore> Actualizar(Librosautore entidad);
+        Task<LibrosAutore> Actualizar(LibrosAutore entidad);
     }
 }

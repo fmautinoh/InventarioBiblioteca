@@ -1,9 +1,9 @@
-﻿using InventarioBiblioteca.Modelos;
+﻿using InventarioBiblioteca.Models;
 
 namespace InventarioBiblioteca.Repositorio.IRepositorio
 {
-    public interface IInventarioRepositorio : IRepositorio<Inventariolibro>
+    public interface IInventarioRepositorio : IRepositorio<InventarioLibro>
     {
-        Task<Inventariolibro> Actualizar(Inventariolibro entidad);
+        Task<InventarioLibro> Actualizar(InventarioLibro entidad);
     }
 }

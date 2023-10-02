@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using InventarioBiblioteca.Modelos;
-using InventarioBiblioteca.Modelos.ModelDto;
+using InventarioBiblioteca.Models;
+using InventarioBiblioteca.Models.ModelsDto;
 using InventarioBiblioteca.Repositorio.IRepositorio;
 using Isopoh.Cryptography.Argon2;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -41,7 +41,7 @@ namespace InventarioBiblioteca.Repositorio
             Usuario modelUsuarioCrt = new() { 
             Usu = modelUsuario.Usu,
             Pwsd = passwordHash,
-            Tipousuarioid =modelUsuario.Tipousuarioid
+            TipousuarioId =modelUsuario.Tipousuarioid
             };
             await _databaseContext.Usuarios.AddAsync(modelUsuarioCrt);
             await _databaseContext.SaveChangesAsync();
@@ -70,9 +70,9 @@ namespace InventarioBiblioteca.Repositorio
                 {
                     Subject = new ClaimsIdentity(new Claim[]
                     {
-                    new Claim(ClaimTypes.NameIdentifier, usuario.Usuarioid.ToString()),
+                    new Claim(ClaimTypes.NameIdentifier, usuario.UsuarioId.ToString()),
                     new Claim(ClaimTypes.Name,usuario.Usu.ToString()),
-                    new Claim(ClaimTypes.Sid,usuario.Tipousuarioid.ToString())
+                    new Claim(ClaimTypes.Sid,usuario.TipousuarioId.ToString())
 
                     }),
                     Expires = DateTime.UtcNow.AddHours(8),

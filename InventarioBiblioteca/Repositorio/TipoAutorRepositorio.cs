@@ -1,9 +1,9 @@
-﻿using InventarioBiblioteca.Modelos;
+﻿using InventarioBiblioteca.Models;
 using InventarioBiblioteca.Repositorio.IRepositorio;
 
 namespace InventarioBiblioteca.Repositorio
 {
-    public class TipoAutorRepositorio : ReaderRepositorio<Tipoautor>, ITipoAutorRepositorio
+    public class TipoAutorRepositorio : ReaderRepositorio<TipoAutor>, ITipoAutorRepositorio
     {
         private readonly DatabaseContext _context;
 

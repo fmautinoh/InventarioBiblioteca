@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using InventarioBiblioteca.Modelos;
+using InventarioBiblioteca.Models;
 
 namespace InventarioBiblioteca.Repositorio.IRepositorio
 {

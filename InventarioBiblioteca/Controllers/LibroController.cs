@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using Microsoft.AspNetCore.Authorization;
-using InventarioBiblioteca.Models.ModelDto;
+using InventarioBiblioteca.Models.ModelsDto;
 using InventarioBiblioteca.Models;
 using InventarioBiblioteca.Repositorio.IRepositorio;
 
@@ -71,7 +71,7 @@ namespace InventarioBiblioteca.Controllers
                     return BadRequest(_apiResponse);
                 }
 
-                var isexistente = await _Librorrepo.ListObjetos(c => c.Nombrelib == ModelLibro.NombreLib);
+                var isexistente = await _Librorrepo.ListObjetos(c => c.NombreLib == ModelLibro.NombreLib);
                 if (isexistente.Count != 0)
                 {
                     var message = "Libro Existente";
@@ -95,26 +95,26 @@ namespace InventarioBiblioteca.Controllers
 
                 Libro modelcreate = new()
                 {
-                    Nombrelib = ModelLibro.NombreLib,
-                    Tipoid = ModelLibro.TipoId,
+                    NombreLib = ModelLibro.NombreLib,
+                    TipoId = ModelLibro.TipoId,
                     Edicion = ModelLibro.Edicion,
                     Año = ModelLibro.Año,
                     Editorial = ModelLibro.Editorial
                 };
                 await _Librorrepo.Crear(modelcreate);
-                Libro creado = await _Librorrepo.Listar(c => c.Nombrelib == ModelLibro.NombreLib, tracked: false);
+                Libro creado = await _Librorrepo.Listar(c => c.NombreLib == ModelLibro.NombreLib, tracked: false);
                 foreach (var autorId in ModelLibro.Autor)
                 {
                     // Crear el registro en la tabla LibrosAutores
-                    Librosautore modelautorlibro = new()
+                    LibrosAutore modelautorlibro = new()
                     {
-                        Libroid = creado.Libroid,
-                        Autorid = autorId
+                        LibroId = creado.LibroId,
+                        AutorId = autorId
                     };
                     await _LibroAutorepo.Crear(modelautorlibro);
                 }
 
-                var result =  await _vistalibrorepo.GetLibroConAutoresPorLibroid(creado.Libroid);
+                var result =  await _vistalibrorepo.GetLibroConAutoresPorLibroid(creado.LibroId);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -160,24 +160,24 @@ namespace InventarioBiblioteca.Controllers
 
                 Libro modelcreate = new Libro()
                 {
-                    Libroid = idLib,
-                    Nombrelib = ModelLibro.NombreLib,
-                    Tipoid = ModelLibro.TipoId,
+                    LibroId = idLib,
+                    NombreLib = ModelLibro.NombreLib,
+                    TipoId = ModelLibro.TipoId,
                     Edicion = ModelLibro.Edicion,
                     Año = ModelLibro.Año,
                     Editorial = ModelLibro.Editorial
                 };
                 await _Librorrepo.Actualizar(modelcreate);
-                Libro creado = await _Librorrepo.Listar(c => c.Nombrelib == ModelLibro.NombreLib, tracked: false);
-                List<Librosautore> listaLibroAutor = await _LibroAutorepo.ListObjetos(c => c.Libroid == idLib);
+                Libro creado = await _Librorrepo.Listar(c => c.NombreLib == ModelLibro.NombreLib, tracked: false);
+                List<LibrosAutore> listaLibroAutor = await _LibroAutorepo.ListObjetos(c => c.LibroId == idLib);
 
                 // Update existing records with new author IDs
                 foreach (var libroAutor in listaLibroAutor)
                 {
-                    int? autorId = ModelLibro.Autor.FirstOrDefault(a => a == libroAutor.Autorid);
+                    int? autorId = ModelLibro.Autor.FirstOrDefault(a => a == libroAutor.AutorId);
                     if (autorId.HasValue)
                     {
-                        libroAutor.Autorid = autorId.Value;
+                        libroAutor.AutorId = autorId.Value;
                         await _LibroAutorepo.Remover(libroAutor);
                     }
                 }
@@ -185,12 +185,12 @@ namespace InventarioBiblioteca.Controllers
                 foreach (var autorId in ModelLibro.Autor)
                 {
                     // Crear el registro en la tabla LibrosAutores
-                    Librosautore modelautorlibro = new()
+                    LibrosAutore modelautorlibro = new()
                     {
-                        Libroid = idLib,
-                        Autorid = autorId
+                        LibroId = idLib,
+                        AutorId = autorId
                     };
-                    Librosautore AutoreCrt = _mapper.Map<Librosautore>(modelautorlibro);
+                    LibrosAutore AutoreCrt = _mapper.Map<LibrosAutore>(modelautorlibro);
                     await _LibroAutorepo.Crear(modelautorlibro);
                 }
 

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using InventarioBiblioteca.Models.ModelDto;
+using InventarioBiblioteca.Models.ModelsDto;
 using InventarioBiblioteca.Models;
 using InventarioBiblioteca.Repositorio.IRepositorio;
 using Microsoft.AspNetCore.Authorization;
@@ -34,7 +34,7 @@ namespace InventarioBiblioteca.Controllers
         {
             try
             {
-                IEnumerable<Estadoconservacion> estado = await _estadoRepositorio.ListObjetos();
+                IEnumerable<EstadoConservacion> estado = await _estadoRepositorio.ListObjetos();
                 return Ok(_mapper.Map<IEnumerable<EstadoDto>>(estado));
             }
             catch (Exception ex)

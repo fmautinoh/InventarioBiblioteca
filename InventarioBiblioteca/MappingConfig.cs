@@ -1,5 +1,5 @@
-﻿using InventarioBiblioteca.Modelos;
-using InventarioBiblioteca.Modelos.ModelDto;
+﻿using InventarioBiblioteca.Models;
+using InventarioBiblioteca.Models.ModelsDto;
 using AutoMapper;
 
 namespace InventarioBiblioteca
@@ -11,12 +11,12 @@ namespace InventarioBiblioteca
             CreateMap<Autore, AutorDto>().ReverseMap();
             CreateMap<Autore, AutorCreatedDto>().ReverseMap();
             CreateMap<LibroDto, VLibro>().ReverseMap();
-            CreateMap<TipoAutorDto, Tipoautor>().ReverseMap();
-            CreateMap<TipoLibroDto, Tipolibro>().ReverseMap();
-            CreateMap<Librosautore, LibroAutorCreatedDto>().ReverseMap();
-            CreateMap<Inventariolibro, InventarioDto>().ReverseMap();
+            CreateMap<TipoAutorDto, TipoAutor>().ReverseMap();
+            CreateMap<TipoLibroDto, TipoLibro>().ReverseMap();
+            CreateMap<LibrosAutore, LibroAutorCreatedDto>().ReverseMap();
+            CreateMap<InventarioLibro, InventarioDto>().ReverseMap();
             CreateMap<Usuario, UsuarioCreatedDto>().ReverseMap();
-            CreateMap<Estadoconservacion, EstadoDto>().ReverseMap();
+            CreateMap<EstadoConservacion, EstadoDto>().ReverseMap();
             CreateMap<Autenticidad, AutenticidadDto>().ReverseMap();
 
 

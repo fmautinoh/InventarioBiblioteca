@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using Microsoft.AspNetCore.Authorization;
-using InventarioBiblioteca.Models.ModelDto;
+using InventarioBiblioteca.Models.ModelsDto;
 using InventarioBiblioteca.Models;
 using InventarioBiblioteca.Repositorio.IRepositorio;
 
@@ -64,7 +64,7 @@ namespace InventarioBiblioteca.Controllers
 
                     return BadRequest(_apiResponse);
                 }
-                var autor = await _autorrepo.ListObjetos(c => c.Autorid == idaut);
+                var autor = await _autorrepo.ListObjetos(c => c.AutorId == idaut);
                 if (autor == null)
                 {
                     _apiResponse.Alertmsg = "Autor no Encontrado";
@@ -74,7 +74,7 @@ namespace InventarioBiblioteca.Controllers
                     return NotFound(_apiResponse);
                 }
 
-                var resultado = await _vautorrepo.ListObjetos(x=> x.autorID == idaut);
+                var resultado = await _vautorrepo.ListObjetos(x=> x.AutorId == idaut);
                 return Ok(resultado);
             }
             catch (Exception ex)
@@ -107,7 +107,7 @@ namespace InventarioBiblioteca.Controllers
                     return BadRequest(_apiResponse);
                 }
 
-                var isexistente = await _autorrepo.ListObjetos(c => c.Nombreautor == ModelAutor.NombreAutor);
+                var isexistente = await _autorrepo.ListObjetos(c => c.NombreAutor == ModelAutor.NombreAutor);
                 if (isexistente.Count != 0)
                 {
                     var message = "Autor Existente";
@@ -129,7 +129,7 @@ namespace InventarioBiblioteca.Controllers
 
                 Autore AutoreCrt = _mapper.Map<Autore>(ModelAutor);
                 await _autorrepo.Crear(AutoreCrt);
-                var resultado = await _vautorrepo.ObtenerPrimerElementoDescendente(ordenarPor: x => x.autorID);
+                var resultado = await _vautorrepo.ObtenerPrimerElementoDescendente(ordenarPor: x => x.AutorId);
                 return Ok(resultado);
             }
             catch (Exception ex)
@@ -161,12 +161,12 @@ namespace InventarioBiblioteca.Controllers
 
                 Autore mdAutorUp = new()
                 {
-                    Autorid = idaut,
-                    Nombreautor = ModelAutor.NombreAutor,
-                    Tipoautorid = ModelAutor.TipoAutorId
+                    AutorId = idaut,
+                    NombreAutor = ModelAutor.NombreAutor,
+                    TipoAutorId = ModelAutor.TipoAutorId
                 };
                 await _autorrepo.Actualizar(mdAutorUp);
-                var resultado = await _vautorrepo.Listar(x => x.autorID == idaut, tracked: false);
+                var resultado = await _vautorrepo.Listar(x => x.AutorId == idaut, tracked: false);
                 return Ok(resultado);
             }
             catch (Exception e)

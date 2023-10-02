@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using Microsoft.AspNetCore.Authorization;
-using InventarioBiblioteca.Models.ModelDto;
+using InventarioBiblioteca.Models.ModelsDto;
 using InventarioBiblioteca.Models;
 using InventarioBiblioteca.Repositorio.IRepositorio;
 
@@ -36,7 +36,7 @@ namespace InventarioBiblioteca.Controllers
         {
             try
             {
-                IEnumerable<Tipolibro> tipoautorlist = await _tipolibrorrepo.ListObjetos();
+                IEnumerable<TipoLibro> tipoautorlist = await _tipolibrorrepo.ListObjetos();
                 return Ok(_mapper.Map<IEnumerable<TipoLibroDto>>(tipoautorlist));
             }
             catch (Exception ex)

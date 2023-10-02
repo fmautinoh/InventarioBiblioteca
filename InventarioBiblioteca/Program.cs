@@ -1,4 +1,4 @@
-using InventarioBiblioteca.Modelos;
+using InventarioBiblioteca.Models;
 using InventarioBiblioteca.Repositorio.IRepositorio;
 using InventarioBiblioteca.Repositorio;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -67,7 +67,7 @@ builder.Services.AddAuthentication(x =>
 
 builder.Services.AddDbContext<DatabaseContext>(option =>
 {
-    option.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConectionSqlServer"));
+    option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConectionSqlServer"));
 });
 builder.Services.AddCors(options =>
 {

@@ -1,4 +1,4 @@
-﻿using InventarioBiblioteca.Models.ModelDto;
+﻿using InventarioBiblioteca.Models.ModelsDto;
 using InventarioBiblioteca.Models;
 using InventarioBiblioteca.Repositorio.IRepositorio.IReporteRepositorio;
 using Microsoft.AspNetCore.Authorization;
@@ -49,7 +49,7 @@ namespace InventarioBiblioteca.Controllers
         {
             try
             {
-                var vInv = await _repoteInventarioRepositorio.ListObjetos(x=>x.LibroID == idlib);
+                var vInv = await _repoteInventarioRepositorio.ListObjetos(x=>x.LibroId == idlib);
                 return Ok(vInv);
             }
             catch (Exception ex)

@@ -170,7 +170,7 @@ public partial class DatabaseContext : DbContext
             entity.ToTable("TipoAutor");
 
             entity.Property(e => e.TipoAutorId).HasColumnName("TipoAutorID");
-            entity.Property(e => e.TipoAutor1)
+            entity.Property(e => e.tipoautor)
                 .HasMaxLength(25)
                 .IsUnicode(false)
                 .HasColumnName("TipoAutor");

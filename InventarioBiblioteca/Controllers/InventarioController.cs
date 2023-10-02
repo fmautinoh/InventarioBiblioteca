@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using InventarioBiblioteca.Models.ModelDto;
+using InventarioBiblioteca.Models.ModelsDto;
 using InventarioBiblioteca.Models;
 using InventarioBiblioteca.Repositorio.IRepositorio;
 using Microsoft.AspNetCore.Authorization;
@@ -62,7 +62,7 @@ namespace InventarioBiblioteca.Controllers
 
                     return BadRequest(_apiResponse);
                 }
-                var inven = await _vInvenrepo.ListObjetos(c => c.Inventarioid == idInv);
+                var inven = await _vInvenrepo.ListObjetos(c => c.InventarioId == idInv);
                 if (inven == null)
                 {
                     _apiResponse.Alertmsg = "Libro no encontrado no Encontrado";
@@ -113,9 +113,9 @@ namespace InventarioBiblioteca.Controllers
                     return BadRequest(_apiResponse);
                 }
 
-                Inventariolibro InventCrt = _mapper.Map<Inventariolibro>(ModelInv);
+                InventarioLibro InventCrt = _mapper.Map<InventarioLibro>(ModelInv);
                 await _Invrepo.Crear(InventCrt);
-                var creado = await _vInvenrepo.ObtenerPrimerElementoDescendente(ordenarPor: x => x.Inventarioid);
+                var creado = await _vInvenrepo.ObtenerPrimerElementoDescendente(ordenarPor: x => x.InventarioId);
                 return Ok(creado);
             }
             catch (Exception ex)
@@ -145,17 +145,17 @@ namespace InventarioBiblioteca.Controllers
                     return BadRequest(_apiResponse);
                 }
 
-                Inventariolibro mdInvUp = new()
+                InventarioLibro mdInvUp = new()
                 {
-                    Inventarioid = idInv,
-                    Libroid = ModelInv.LibroId,
+                    InventarioId = idInv,
+                    LibroId = ModelInv.LibroId,
                     Codigo = ModelInv.Codigo,
-                    Estadoid = ModelInv.EstadoId,
-                    Autenticidadid = ModelInv.Autenticidadid
+                    EstadoId = ModelInv.EstadoId,
+                    AutenticidadId = ModelInv.Autenticidadid
                 };
 
                 await _Invrepo.Actualizar(mdInvUp);
-                var resultado = await _vInvenrepo.Listar(c => c.Inventarioid == idInv, tracked: false);
+                var resultado = await _vInvenrepo.Listar(c => c.InventarioId == idInv, tracked: false);
                 return Ok(resultado);
             }
             catch (Exception e)
@@ -178,15 +178,15 @@ namespace InventarioBiblioteca.Controllers
         {
             try
             {
-                var MdLibro = await _Invrepo.Listar(c => c.Inventarioid == idlib, tracked: false);
+                var MdLibro = await _Invrepo.Listar(c => c.InventarioId == idlib, tracked: false);
 
-                Inventariolibro deleteLB = new()
+                InventarioLibro deleteLB = new()
                 {
-                    Inventarioid = idlib,
+                    InventarioId = idlib,
                     Codigo = MdLibro.Codigo,
-                    Estadoid = MdLibro.Estadoid,
-                    Libroid = MdLibro.Libroid,
-                    Autenticidadid = MdLibro.Autenticidadid
+                    EstadoId = MdLibro.EstadoId,
+                    LibroId = MdLibro.LibroId,
+                    AutenticidadId = MdLibro.AutenticidadId
                 };
 
                 await _Invrepo.Remover(deleteLB);

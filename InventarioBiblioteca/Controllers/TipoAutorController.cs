@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using Microsoft.AspNetCore.Authorization;
 using InventarioBiblioteca.Repositorio.IRepositorio;
-using InventarioBiblioteca.Models.ModelDto;
+using InventarioBiblioteca.Models.ModelsDto;
 using InventarioBiblioteca.Models;
 
 namespace InventarioBiblioteca.Controllers
@@ -34,7 +34,7 @@ namespace InventarioBiblioteca.Controllers
         {
             try
             {
-                IEnumerable<Tipoautor> tipoautorlist = await _tipoautorrepo.ListObjetos();
+                IEnumerable<TipoAutor> tipoautorlist = await _tipoautorrepo.ListObjetos();
                 var resultado = _mapper.Map<IEnumerable<TipoAutorDto>>(tipoautorlist);
                 return Ok(resultado);
             }
